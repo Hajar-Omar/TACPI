@@ -1,0 +1,195 @@
+<header>
+        <section class="left-header">
+    <div class="navbar-header controlBtn headeritem">
+        <button type="button" id="sidebarCollapse">
+            <i class="fa fa-filter" aria-expanded="true"></i>
+        </button>
+        <button type="button" id="dashboarsCollapse">
+            <i class="fa fa-bars" aria-expanded="true"></i>
+        </button>
+    </div>
+    <a href="#" class="logo headeritem">
+        <img src="./assets/img/logo.png" alt="TACPI logo">
+    </a>
+    <a href="#" class="logout headeritem">
+        <img src="./assets/img/logout.png" alt="logout">
+    </a>
+</section>
+
+
+<div class="main-menu">
+
+
+
+
+
+    <div class="radio-tabs-wrapper tabsGroup">
+        <a href="#" class="tabsGroupItem" ng-repeat="item in dashboardTabsList" data-select="{{item.selected}}">
+            <img ng-src="{{item.selected ? item.imgSelected : item.imgSource}}" alt="{{item.name}}">
+            <input type="radio" name="radioTabDashbords" id="{{item.name}}" ng-checked="{{item.selected}}" ng-click="updateSelectedDashboard($event)"
+            />
+            <label for="{{item.name}}">{{item.text}}</label>
+        </a>
+    </div>
+</div>
+    </header>
+    <article class="main-content">
+        <aside>
+            <h5>Search</h5>
+<div class="group-button radio-tabs-wrapper filterGroup">
+    <input type="radio" name="searchFilter" id="searchFilter-Year" checked />
+    <label for="searchFilter-Year">Year</label>
+
+    <input type="radio" name="searchFilter" id="searchFilter-Hyear" />
+    <label for="searchFilter-Hyear">Half Year</label>
+
+    <input type="radio" name="searchFilter" id="searchFilter-Qyear" />
+    <label for="searchFilter-Qyear">Quarter Year</label>
+
+    <input type="radio" name="searchFilter" id="searchFilter-Monthly" />
+    <label for="searchFilter-Monthly">Monthly</label>
+
+</div>
+
+
+<div class="form-group">
+    <label>vision</label>
+    <select name="" id="" class="form-control" ng-model="selectedVision">
+        <option ng-repeat="x in filterData[0].visionMap" value="{{x.key}}">{{x.value}}</option>
+    </select>
+</div>
+<div class="form-group">
+    <label>Measure data frequency</label>
+    <select name="" id="" class="form-control" ng-model="selectedPeriod">
+        <option ng-repeat="x in filterData[0].frequencyMap" value="{{x.key}}">{{x.value}}</option>
+    </select>
+</div>
+<div class="row">
+    <div class="col-md-6 col-xs-12 customPadding">
+        <div class="form-group">
+            <label>Measure data start year</label>
+            <select name="" id="" class="form-control">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12 customPadding">
+        <div class="form-group">
+            <label>end year</label>
+            <select name="" id="" class="form-control">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-xs-12 customPadding">
+        <div class="form-group">
+            <label>Measure data start date</label>
+            <input type="date" name="" id="" class="form-control">
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12 customPadding">
+        <div class="form-group">
+            <label> end date</label>
+            <input type="date" name="" id="" class="form-control">
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label>Measure data type for</label>
+    <select name="" id="" class="form-control">
+        <option value=""></option>
+    </select>
+</div>
+<div class="form-group">
+    <label>Organization </label>
+    <select name="" id="" class="form-control">
+        <option value=""></option>
+    </select>
+</div>
+<div class="form-group">
+    <label>Employee </label>
+    <select name="" id="" class="form-control">
+        <option value=""></option>
+    </select>
+</div>
+<div class="form-group">
+    <button class="btn btn-block btn-filter">filter results</button>
+</div>
+        </aside>
+        <main>
+            <div class="panel panel-default panel-custom">
+    <div class="panel-heading">
+        <h5>panel title</h5>
+        <h6>panel sub title</h6>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Perspectives</th>
+                        <th>target</th>
+                        <th>minimum</th>
+                        <th>score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Perspectives 1</td>
+                        <td>
+                            <span>100</span>
+                        </td>
+                        <td>
+                            <span>0</span>
+                        </td>
+                        <td>
+                            <span>150</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Perspectives 1</td>
+                        <td>
+                            <span>100</span>
+                        </td>
+                        <td>
+                            <span>0</span>
+                        </td>
+                        <td>
+                            <span>150</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel-footer"> Frequency : Half of year date range : 2014 ~ 2017 Measure data type : All</div>
+    <div class="charts">
+        <div id="pieChart1" class="chartContainer"></div>
+        <div id="pieChart2" class="chartContainer"></div>
+        <div id="pieChart3" class="chartContainer"></div>
+    </div>
+</div>
+
+<div class="panel panel-default panel-custom">
+    <div class="panel-heading">
+        <h5>panel title</h5>
+    </div>
+    <div class="panel-body">
+        <div id="lineChart" class="chartContainer"></div>
+    </div>
+
+</div>
+<div class="panel panel-default panel-custom">
+    <div class="panel-heading">
+        <h5>panel title</h5>
+    </div>
+    <div class="panel-body">
+        <div id="barChart" class="chartContainer"></div>
+    </div>
+
+</div>
+        </main>
+    </article>

@@ -1,0 +1,97 @@
+aside {
+    .form-control {
+        background: transparent;
+        border-color: #666d8a;
+        color: #666d8a;
+
+        &.error {
+            border-color: #c35d5d;
+
+            & + label {
+                &.error {
+                    color: #c35d5d;
+                }
+            }
+        }
+    }
+
+    > h5 {
+        font-weight: bold;
+        color: #666d8a;
+        text-transform: uppercase;
+    }
+
+    label {
+        font-weight: normal;
+        font-size: 0.9em;
+        color: #666d8a;
+        text-transform: capitalize;
+    }
+
+    .btn-filter {
+        background-color: #61b7e6;
+        color: #fff;
+        text-transform: capitalize;
+        font-weight: bold;
+        margin-top: 30px;
+    }
+
+    .radio-filter-item {
+        display: inline-block;
+    }
+
+    .disabledDate {
+        & > div {
+            position: relative;
+        }
+
+        i {
+            position: absolute;
+            top: 30%;
+            right: 10%;
+            color: #666d8a;
+        }
+    }
+}
+
+aside .customPadding {
+    &:first-child {
+        padding-right: 7px;
+    }
+
+    &:last-child {
+        padding-left: 7px;
+    }
+}
+
+
+.filterGroup {
+    width: 100%;
+
+    input[type='radio'] {
+
+        &:checked + label {
+            background-color: #3cbcbb;
+            color: #fff;
+            border: 1px solid #3cbcbb;
+        }
+    }
+
+    label {
+        color: #666d8a;
+        padding: 5px;
+        border: 1px solid #4a5066;
+        border-radius: 4px;
+        margin-right: 7px;
+
+        &:hover {
+            background-color: #3cbcbb;
+            color: #fff;
+            border: 1px solid #3cbcbb;
+        }
+    }
+}
+
+.mCSB_outside + .mCSB_scrollTools {
+    right: 0px;
+}

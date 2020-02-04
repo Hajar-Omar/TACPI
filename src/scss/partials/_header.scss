@@ -1,0 +1,125 @@
+header {
+    .left-header {
+        background-color: #252839;
+        width: 320px;
+        float: left;
+        height: 100%;
+        display: flex;
+
+        .headeritem {
+            flex-grow: 1;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+
+            &:first-child {
+                display: none;
+            }
+        }
+
+        .logout {
+            background: #1b1d2a;
+        }
+    }
+}
+
+
+// header.active .left-header {background-color: #252839;}
+
+#dashboarsCollapse {
+    display: none;
+    float: left;
+}
+
+.tabsGroup {
+    width: calc( 100% - 320px );
+    //transform: translate(0,0, 300,300);
+    transition: all 0.3s;
+
+    &.active {
+        width: 100%;
+        float: right;
+        display: block;
+    }
+
+    &.active a {
+        float: right;
+        width: 100%;
+    }
+
+    div {
+        width: 20%;
+        float: left;
+        height: 80px;
+        padding: 15px;
+        position: relative;
+        text-align: center;
+        background-color: #fff;
+        color: #74777e;
+        font-size: 13px;
+        border-right: 1px solid #d1dadf;
+        border-bottom: 1px solid #d1dadf;
+
+        &:hover {
+            background-color: #e4e8ea;
+            color: #333438;
+        }
+
+        &[data-select='true'] {
+            background-color: #d1dadf;
+            color: #333438;
+        }
+
+        &[data-select="true"]:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 45%;
+            width: 30px;
+            height: 30px;
+            background-color: #d1dadf;
+            transform: rotate(45deg);
+            border-radius: 3px;
+        }
+
+        & img {
+            display: block;
+            margin: 0 auto 2px auto;
+            height: 20px;
+        }
+
+        &:last-child {
+            border-right: none;
+        }
+
+        input[type='radio'] {
+            display: block;
+            position: absolute;
+            z-index: 99;
+            width: 100%;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            left: 0;
+            opacity: 0;
+        }
+    }
+}
+
+
+.radio-tabs-wrapper {
+    display: inline-block;
+
+    input[type="radio"] {
+        display: none;
+
+        & + label {
+            cursor: pointer;
+            position: relative;
+        }
+
+        &:checked + label {
+            z-index: 1;
+        }
+    }
+}

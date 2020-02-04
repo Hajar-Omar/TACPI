@@ -1,0 +1,43 @@
+<section class="left-login">
+    <p>2018. All Rights Reserved.</p>
+</section>
+<section class="right-login">
+    <div class="mainLogo">
+        <img src="./assets/images/logoLogin.png" alt="TACPI logo here!">
+    </div>
+    <section>
+        <h3>Login</h3>
+        <form ng-submit="getLogin()">
+            <div class="form-validate">
+                   <div class="error-box" ng-hide="loginMsg == ''">{{loginMsg}}</div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <input id="username" data-rule-required="true" data-msg-required="Field required" type="text" class="form-control" name="username" placeholder="User Name" ng-model="user.name">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-key"></i>
+                    </span>
+                    <input id="password" data-rule-required="true" data-msg-required="Field required" type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password">
+                </div>
+                <div class="remmbrForgt">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="" checked>
+                            <span class="cr">
+                                <i class="cr-icon fa fa-check"></i>
+                            </span>
+                            Remember me
+                        </label>
+                    </div>
+                    <a href="#">Forgot Password ?</a>
+                </div>
+                <div class="loginBtn">
+                    <input class="form-submit" type="submit" value="login" />
+                </div>
+            </div>
+        </form>
+    </section>
+</section>

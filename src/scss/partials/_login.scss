@@ -1,0 +1,155 @@
+.left-login {
+    background: url('../images/loginImg.png');
+    width: 50%;
+    height: 100vh;
+    float: left;
+    background-size: cover;
+    position: relative;
+
+    p {
+        color: white;
+        font-size: 16px;
+        position: absolute;
+        bottom: 0;
+        margin: 0 0 25px 50px;
+    }
+}
+
+.right-login {
+    // background: url(../img/loginImg.png);
+    width: 50%;
+    float: right;
+    padding: 8% 30px 0 30px;
+    background-color: white;
+
+    .mainLogo {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10%;
+
+        @media only screen and (max-width: 1366px) {
+            margin-bottom: 10%;
+        }
+    }
+
+    section {
+        width: 60%;
+        margin: 0 auto;
+
+        h3 {
+            color: #6a757b;
+            font-size: 35px;
+            font-weight: 600;
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 1px;
+                border: 1px solid #e5e5e5;
+                bottom: 0;
+                left: 0;
+                margin-bottom: -15px;
+            }
+        }
+
+        form {
+            margin-top: 80px;
+
+            @media only screen and (max-width: 1366px) {
+                margin-top: 60px;
+            }
+
+            .input-group {
+                padding-bottom: 20px;
+                height: 65px;
+                margin-bottom: 5px;
+
+                span {
+                    border-radius: 7px 0 0 7px;
+                    background-color: #f8f8f8;
+
+                    i {
+                        color: #aaaaaa;
+                        font-size: 18px;
+                    }
+                }
+
+                input {
+                    height: 100%;
+                    font-size: 17px;
+                    background-color: #f8f8f8;
+                    color: #989898;
+                    border-radius: 0px 7px 7px 0px !important;
+                    border-left: none;
+                }
+
+                label.error {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    white-space: nowrap;
+                    margin-top: -20px;
+                    color: #c01a1a;
+                    font-weight:normal;
+                }
+            }
+
+            .remmbrForgt {
+                display: flex;
+                justify-content: space-between;
+
+                .checkbox {
+                    margin: 0;
+                    color: #989898;
+
+                    label {
+                        padding: 0;
+                        color: #989898;
+
+                        .cr {
+                            background-color: #f2f2f2;
+
+                            i {
+                                color: #a8a8a8;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+
+                a {
+                    color: #989898;
+                    text-decoration: underline;
+                }
+            }
+
+            .loginBtn {
+                margin-top: 15%;
+
+                @media only screen and (max-width: 1366px) {
+                    margin-top: 10%;
+                }
+
+                input {
+                    float: right;
+                    background-color: #50afe5;
+                    border: 1px solid #50afe5;
+                    width: 40%;
+                    color: white;
+                    border-radius: 6px;
+                    border: none;
+                    font-size: 18px;
+                    padding: 13px;
+
+                    &:hover {
+                        color: #50afe5;
+                        background-color: white;
+                        border: 1px solid #50afe5;
+                    }
+                }
+            }
+        }
+    }
+}

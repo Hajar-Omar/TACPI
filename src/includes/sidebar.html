@@ -1,0 +1,87 @@
+<div>
+    <h5>Search</h5>
+    <div class="group-button radio-tabs-wrapper filterGroup">
+        <div class="radio-filter-item" ng-repeat="dp in filterData[0].frequencyMap" ng-hide="dp.key == '1' || dp.key == '2' || dp.key == 'all'">
+            <input type="radio" ng-value="dp.key" ng-click="changeFilterPeriod()" ng-model="$parent.selectedPeriod" name="searchFilter"
+                id="searchFilter-{{dp.value}}" />
+            <label for="searchFilter-{{dp.value}}">{{dp.value}}</label>
+        </div>
+    </div>
+
+    <form ng-submit="validate()" class="form-validate">
+        <!--<input type="email" name="email" class="email-field" placeholder="account@mail.com" 
+               data-rule-required="true" data-msg-required="Please enter your email" 
+               data-rule-email="true" data-msg-email="Please enter a valid email" data-weburl='http://spnelson:2180'>-->
+        <div class="form-group custom-select">
+            <label>vision</label>
+            <select name="" id="allVisions" class="form-control" ng-model="selectedVision" data-rule-required="true" data-msg-required="Field required" >
+                <option ng-repeat="x in filterData[0].visionMap" value="{{x.key}}">{{x.value}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Measure data frequency</label>
+            <select name="" id="MDFreq" class="form-control" ng-model="selectedPeriod" data-rule-required="true" data-msg-required="Field required">
+                <option ng-repeat="x in filterData[0].frequencyMap" value="{{x.key}}">{{x.value}}</option>
+            </select>
+        </div>
+        <div class="row" ng-hide="selectedPeriod == '1' || selectedPeriod == '2' || selectedPeriod == '3'">
+            <div class="col-md-6 col-xs-12 customPadding">
+                <div class="form-group">
+                    <label>Measure data start year</label>
+                    <input type="text" class="form-control yearPicker start-yearPicker" data-rule-required="true" data-msg-required="Field required">
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12 customPadding">
+                <div class="form-group">
+                    <label>end year</label>
+                    <input type="text" class="form-control yearPicker end-yearPicker" data-rule-required="true" data-msg-required="Field required">
+                    <p>{{endYearDate}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="selectedPeriod == '1' || selectedPeriod == '2' || selectedPeriod == '3'">
+            <div class="col-md-6 col-xs-12 customPadding">
+                <div class="form-group disabledDate">
+                    <label>Measure data start date</label>
+                    <div>
+                        <input type="text" class="form-control datePicker start-datePicker" data-rule-required="true" data-msg-required="Field required">
+                        <i class="fa fa-calendar" aria-expanded="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12 customPadding">
+                <div class="form-group disabledDate">
+                    <label> end date</label>
+                    <div>
+                        <input type="text" class="form-control datePicker end-datePicker" data-rule-required="true" data-msg-required="Field required">
+                        <i class="fa fa-calendar" aria-expanded="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Measure data type for</label>
+            <select name="" id="MeasureType" class="form-control" ng-model="MeasureType">
+                <option value="all">All</option>
+                <option value="organization">Organization</option>
+                <option value="employee">Employee</option>
+
+            </select>
+        </div>
+        <div class="form-group disabledMType">
+            <label>Organization </label>
+            <select name="selectedOrganization" id="" class="form-control" ng-model="selectedOrganization">
+                <option ng-repeat="x in filterData[0].measureDataOrganizationMap" value="{{x.key}}">{{x.value}}</option>
+            </select>
+        </div>
+        <div class="form-group disabledMType">
+            <label>Employee </label>
+            <select name="selectedEmployee" id="" class="form-control" ng-model="selectedEmployee">
+                <option ng-repeat="x in filterData[0].measureDataEmployeeMap" value="{{x.key}}">{{x.value}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-block btn-filter form-submit" type="submit">filter results</button>
+        </div>
+    </form>
+</div>

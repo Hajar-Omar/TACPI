@@ -1,0 +1,29 @@
+
+<section class="left-header">
+    <div class="navbar-header controlBtn headeritem">
+        <button type="button" id="sidebarCollapse">
+            <i class="fa fa-filter" aria-expanded="true"></i>
+        </button>
+        <button type="button" id="dashboarsCollapse">
+            <i class="fa fa-bars" aria-expanded="true"></i>
+        </button>
+    </div>
+    <a href="#" class="logo headeritem">
+        <img src="./assets/images/logo.png" alt="TACPI logo">
+    </a>
+    <a href="#" class="logout headeritem">
+        <img src="./assets/images/logout.png" alt="logout">
+    </a>
+</section>
+
+
+<div class="main-menu">
+
+    <div class="radio-tabs-wrapper tabsGroup">
+        <div class="tabsGroupItem" ng-repeat="item in dashboardTabsList" data-select="{{checkedTab == item.name}}">
+            <img ng-src="{{checkedTab == item.name ? item.imgSelected : item.imgSource}}" alt="{{item.name}}">
+            <input ng-click="validate()" type="radio" name="radioTabDashbords" id="{{item.name}}" ng-model="$parent.checkedTab" ng-value="item.name" />
+            <label for="{{item.name}}">{{item.text}}</label>
+        </div>
+    </div>
+</div>

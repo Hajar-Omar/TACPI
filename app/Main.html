@@ -1,0 +1,542 @@
+<header>
+        
+<section class="left-header">
+    <div class="navbar-header controlBtn headeritem">
+        <button type="button" id="sidebarCollapse">
+            <i class="fa fa-filter" aria-expanded="true"></i>
+        </button>
+        <button type="button" id="dashboarsCollapse">
+            <i class="fa fa-bars" aria-expanded="true"></i>
+        </button>
+    </div>
+    <a href="#" class="logo headeritem">
+        <img src="./assets/images/logo.png" alt="TACPI logo">
+    </a>
+    <a href="#" class="logout headeritem">
+        <img src="./assets/images/logout.png" alt="logout">
+    </a>
+</section>
+
+
+<div class="main-menu">
+
+    <div class="radio-tabs-wrapper tabsGroup">
+        <div class="tabsGroupItem" ng-repeat="item in dashboardTabsList" data-select="{{checkedTab == item.name}}">
+            <img ng-src="{{checkedTab == item.name ? item.imgSelected : item.imgSource}}" alt="{{item.name}}">
+            <input ng-click="validate()" type="radio" name="radioTabDashbords" id="{{item.name}}" ng-model="$parent.checkedTab" ng-value="item.name" />
+            <label for="{{item.name}}">{{item.text}}</label>
+        </div>
+    </div>
+</div>
+    </header>
+    <article class="main-content">
+        <aside class="filterSide">
+            <div>
+    <h5>Search</h5>
+    <div class="group-button radio-tabs-wrapper filterGroup">
+        <div class="radio-filter-item" ng-repeat="dp in filterData[0].frequencyMap" ng-hide="dp.key == '1' || dp.key == '2' || dp.key == 'all'">
+            <input type="radio" ng-value="dp.key" ng-click="changeFilterPeriod()" ng-model="$parent.selectedPeriod" name="searchFilter"
+                id="searchFilter-{{dp.value}}" />
+            <label for="searchFilter-{{dp.value}}">{{dp.value}}</label>
+        </div>
+    </div>
+
+    <form ng-submit="validate()" class="form-validate">
+        <!--<input type="email" name="email" class="email-field" placeholder="account@mail.com" 
+               data-rule-required="true" data-msg-required="Please enter your email" 
+               data-rule-email="true" data-msg-email="Please enter a valid email" data-weburl='http://spnelson:2180'>-->
+        <div class="form-group custom-select">
+            <label>vision</label>
+            <select name="" id="allVisions" class="form-control" ng-model="selectedVision" data-rule-required="true" data-msg-required="Field required" >
+                <option ng-repeat="x in filterData[0].visionMap" value="{{x.key}}">{{x.value}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Measure data frequency</label>
+            <select name="" id="MDFreq" class="form-control" ng-model="selectedPeriod" data-rule-required="true" data-msg-required="Field required">
+                <option ng-repeat="x in filterData[0].frequencyMap" value="{{x.key}}">{{x.value}}</option>
+            </select>
+        </div>
+        <div class="row" ng-hide="selectedPeriod == '1' || selectedPeriod == '2' || selectedPeriod == '3'">
+            <div class="col-md-6 col-xs-12 customPadding">
+                <div class="form-group">
+                    <label>Measure data start year</label>
+                    <input type="text" class="form-control yearPicker start-yearPicker" data-rule-required="true" data-msg-required="Field required">
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12 customPadding">
+                <div class="form-group">
+                    <label>end year</label>
+                    <input type="text" class="form-control yearPicker end-yearPicker" data-rule-required="true" data-msg-required="Field required">
+                    <p>{{endYearDate}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="selectedPeriod == '1' || selectedPeriod == '2' || selectedPeriod == '3'">
+            <div class="col-md-6 col-xs-12 customPadding">
+                <div class="form-group disabledDate">
+                    <label>Measure data start date</label>
+                    <div>
+                        <input type="text" class="form-control datePicker start-datePicker" data-rule-required="true" data-msg-required="Field required">
+                        <i class="fa fa-calendar" aria-expanded="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12 customPadding">
+                <div class="form-group disabledDate">
+                    <label> end date</label>
+                    <div>
+                        <input type="text" class="form-control datePicker end-datePicker" data-rule-required="true" data-msg-required="Field required">
+                        <i class="fa fa-calendar" aria-expanded="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Measure data type for</label>
+            <select name="" id="MeasureType" class="form-control" ng-model="MeasureType">
+                <option value="all">All</option>
+                <option value="organization">Organization</option>
+                <option value="employee">Employee</option>
+
+            </select>
+        </div>
+        <div class="form-group disabledMType">
+            <label>Organization </label>
+            <select name="selectedOrganization" id="" class="form-control" ng-model="selectedOrganization">
+                <option ng-repeat="x in filterData[0].measureDataOrganizationMap" value="{{x.key}}">{{x.value}}</option>
+            </select>
+        </div>
+        <div class="form-group disabledMType">
+            <label>Employee </label>
+            <select name="selectedEmployee" id="" class="form-control" ng-model="selectedEmployee">
+                <option ng-repeat="x in filterData[0].measureDataEmployeeMap" value="{{x.key}}">{{x.value}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-block btn-filter form-submit" type="submit">filter results</button>
+        </div>
+    </form>
+</div>
+        </aside>
+        <main>
+            <!--  -->
+<div class="display-msg" ng-show="totalVisionData.length == 0 && loader == false">Please Use the Search Form</div>
+<div id="loader" ng-show="totalVisionData.length == 0  && loader == true"></div>
+
+<div class="error-box" ng-show="errorData.success =='N'">
+  {{errorData.message}}
+</div>
+<div class="panel panel-default panel-custom" ng-show="totalVisionData.length != 0" ng-repeat="vision in totalVisionData">
+
+  <div class="panel-item" ng-hide="checkedTab != 'dashboard'">
+    <div class="panel-heading">
+      <h5>Vision</h5>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-custom">
+          <thead>
+            <tr>
+              <th>Vision</th>
+              <th>Score</th>
+              <th ng-repeat="dt in dateRange">{{dt.date}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{vision.title}}</td>
+              <td style="background:{{vision.bgColor}};color:{{vision.fontColor}}">{{(vision.score | number:2)*1}}</td>
+              <td ng-repeat="dt in dateRange" style="background:{{dt.bgColor}};color:{{dt.fontColor}}">{{(dt.score | number:2)*1}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="panel-item" ng-hide="checkedTab == 'KPIdashboard' || checkedTab == 'ObjDashboard' || checkedTab == 'KPIreport'">
+    <div class="panel-heading">
+      <h5>Perspectives</h5>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-custom">
+          <thead>
+            <tr>
+              <th>Perspectives</th>
+              <th>Target</th>
+              <th>Minimum</th>
+              <th>Score</th>
+              <th ng-repeat="dt in dateRange">{{dt.date}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="pr in vision.perspectives">
+              <td>{{pr.name}}</td>
+              <td>{{pr.target}}</td>
+              <td>{{pr.min}}</td>
+              <td style="background:{{pr.bgColor}};color:{{pr.fontColor}}">{{(pr.score | number:2)*1}}</td>
+              <td ng-repeat="dtp in pr.dateRangeScores" style="background:{{dtp.bgColor}};color:{{dtp.fontColor}}">{{(dtp.score | number:2)*1}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="charts">
+
+        <div ng-repeat="per in vision.perspectives" id="{{per.perId}}" class="chart-item"></div>
+        <div half-chart data="vision.perspectives"></div>
+
+      </div>
+
+
+
+    </div>
+  </div>
+  <div class="panel-item" ng-hide="checkedTab == 'KPIdashboard' || checkedTab == 'PersDashboard' || checkedTab == 'KPIreport'">
+    <div class="panel-heading">
+      <h5>Objectives</h5>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-custom">
+          <thead>
+            <tr>
+              <th>Target</th>
+              <th>Minimum</th>
+              <th>Score</th>
+              <th ng-repeat="dt in dateRange">{{dt.date}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="ob in visionObjectives">
+              <td>{{ob.name}}</td>
+              <td>{{ob.min}}</td>
+              <td style="background:{{ob.bgColor}};color:{{ob.fontColor}}">{{(ob.score | number:2)*1}}</td>
+              <td ng-repeat="dt in ob.dateRangeScores" style="background:{{dt.bgColor}};color:{{dt.fontColor}}">{{(dt.score | number:2)*1}}</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+      <div class="charts">
+        <div ng-repeat="obc in visionObjectives" id="{{obc.objId}}" class="chart-item"></div>
+        <div half-chart data="visionObjectives"></div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+  <div class="panel-item" ng-hide="checkedTab == 'ObjDashboard' || checkedTab == 'PersDashboard' || checkedTab == 'KPIreport'">
+    <div class="panel-heading">
+      <h5>KPIS</h5>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-custom">
+          <thead>
+            <tr>
+              <th>Target</th>
+              <th>Maximum</th>
+              <th>Minimum</th>
+              <th>Score</th>
+              <th ng-repeat="dt in dateRange">{{dt.date}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="kp in visionKpis">
+              <td>{{kp.name}}</td>
+              <td>{{kp.max}}</td>
+              <td>{{kp.min}}</td>
+              <td style="background:{{kp.bgColor}};color:{{kp.fontColor}}">{{(kp.score | number:2)*1}}</td>
+              <td ng-repeat="dt in kp.dateRangeScores" style="background:{{dt.bgColor}};color:{{dt.fontColor}}">{{(dt.score | number:2)*1}}</td>
+            </tr>
+          </tbody>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- <section >
+        <ul class="nav nav-tabs">
+          <li ng-class="{active:isSet(1)}">
+            <a href ng-click="setTab(1)">KPIs Half Charts</a>
+          </li>
+          <li ng-class="{active:isSet(2)}">
+            <a href ng-click="setTab(2)">KPIs Measure Data Bar charts</a>
+          </li>
+        </ul>
+        <div ng-show="isSet(1)" class="charts">
+          <div ng-repeat="kpi in visionKpis" id="{{kpi.id}}" class="chart-item"></div>
+          <div half-chart data="visionKpis"></div>
+        </div>
+        <div ng-show="isSet(2)" class="charts">
+          <div ng-repeat="kpi2 in visionKpis" id="{{kpi2.objId + kpi2.id}}" class="chart-item"></div>
+          <div bar-chart data="visionKpis"></div>
+        </div>
+      </section> -->
+
+      <section ng-repeat="kpi in visionKpis" class="sub-chart">
+        <ul class="nav nav-tabs">
+          <li ng-class="{active:isSet(1)}">
+            <a href ng-click="setTab(1)">KPIs Half Charts</a>
+          </li>
+          <li ng-class="{active:isSet(2)}">
+            <a href ng-click="setTab(2)">KPIs Measure Data Bar charts</a>
+          </li>
+        </ul>
+        <div ng-show="isSet(1)" class="charts">
+          <div  id="{{kpi.id}}" class="chart-item"></div>
+          <div half-chart data="kpi"></div>
+        </div>
+        <div ng-show="isSet(2)" class="charts">
+          <div id="{{kpi.objId + kpi.id}}" class="chart-item"></div>
+          <div bar-chart data="kpi"></div>
+        </div>
+      </section>
+
+
+
+    </div>
+
+  </div>
+
+
+  <div class="panel panel-default panel-custom" ng-hide="checkedTab == 'KPIdashboard' || checkedTab == 'ObjDashboard' || checkedTab == 'KPIreport'">
+    <div class="panel-heading">
+      <h5>Perspectives trend</h5>
+      <h6>Frequency : {{bulkData.displayFrequency}} &nbsp; &nbsp; date range : {{bulkData.displayDateRange1}} ~ {{bulkData.displayDateRange2}}</h6>
+    </div>
+    <div class="panel-body">
+      <div class="chartContainer">
+        <div id="PerspectivesTrend" class="chartDir"></div>
+        <line-chart target="PerspectivesTrend" title="Perspective Trend" ng-repeat="vs in perspectiveSeries" data="vs"></line-chart>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel panel-default panel-custom" ng-hide="checkedTab == 'KPIdashboard' || checkedTab == 'PersDashboard' || checkedTab == 'KPIreport'">
+    <div class="panel-heading">
+      <h5>Objectives trend</h5>
+      <h6>Frequency : {{bulkData.displayFrequency}} &nbsp; &nbsp; date range : {{bulkData.displayDateRange1}} ~ {{bulkData.displayDateRange2}}</h6>
+    </div>
+    <div class="panel-body">
+      <div class="chartContainer">
+        <div id="ObjectivesTrend" class="chartDir"></div>
+        <line-chart target="ObjectivesTrend" title="Objectives Trend" ng-repeat="os in objectivesSeries" data="os"></line-chart>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel panel-default panel-custom" ng-hide="checkedTab == 'ObjDashboard' || checkedTab == 'PersDashboard' || checkedTab == 'KPIreport'">
+    <div class="panel-heading">
+      <h5>KPIS trend</h5>
+      <h6>Frequency : {{bulkData.displayFrequency}} &nbsp; &nbsp; date range : {{bulkData.displayDateRange1}} ~ {{bulkData.displayDateRange2}}</h6>
+    </div>
+    <div class="panel-body">
+      <div class="chartContainer">
+        <div id="KPISTrend" class="chartDir"></div>
+        <line-chart target="KPISTrend" title="KPIS Trend" ng-repeat="ks in kpisSeries" data="ks"></line-chart>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- <div class="panel panel-default panel-custom" ng-show="checkedTab == 'dashboard' || checkedTab == 'KPIdashboard'">
+    <div class="panel-heading">
+      <h5>KPIs Measure Data</h5>
+      <h6>Frequency : {{bulkData.displayFrequency}} &nbsp; &nbsp; date range : {{bulkData.displayDateRange1}} ~ {{bulkData.displayDateRange2}}</h6>
+    </div>
+    <div class="panel-body">
+      <div class="chartContainer">
+        <bar-chart id="barChart1" class="chartDir" data="KPImeasureDatas" kpinames="visionKpisname"></bar-chart>
+      </div>
+    </div>
+
+  </div> -->
+
+
+
+
+</div>
+
+<!-- KPI report -->
+<div class="panel-item" ng-show="perspectivesReprt.length != 0" ng-repeat="perspectives in perspectivesReprt">
+
+  <div ng-hide="checkedTab != 'KPIreport'">
+    <div class="panel panel-default panel-custom">
+      <div class="row">
+        <section class="col-sm-6 col-xs-12">
+          <pie-chart id="pieChart1" class="chartDir" data="perspectivesPieChartsValuesReprt"></pie-chart>
+        </section>
+        <section class="col-sm-6 col-xs-12">
+          <bar-chart-report id="barChartReport" class="chartDir" data="perspectivesBarChartsValuesReprt"></bar-chart-report>
+        </section>
+      </div>
+    </div>
+    <div class="panel panel-default panel-custom">
+      <div class="panel-heading">
+        <h5>{{selectedVisionReport}}</h5>
+        <!-- <h6>Score : {{vision.score}}</h6> -->
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-custom nestedTable">
+            <thead>
+              <tr>
+                <th>Perspectives</th>
+                <th colspan="2">
+                  <table class="secondTable">
+                    <tr>
+                      <th>Objectives</td>
+                        <th>KPI</td>
+                    </tr>
+                  </table>
+                  </th>
+              </tr>
+            </thead>
+            <tbody ng-repeat="per in perspectivesReprt">
+              <tr>
+                <td style="background:{{per.bgColor}};color:{{per.fontColor}}">
+                  <p>{{per.name}}
+                    <img ng-src="{{checkSrc(per.imgIcon)}}" ng-hide="per.imgIcon == ''" alt="img here!">
+                  </p>
+                  <p>Score : {{per.score}}</p>
+                  <p>Weight : {{per.weight}}</p>
+                  <p>Target : {{per.target}}</p>
+                  <p>Min : {{per.min}}</p>
+                  <p>{{per.description}}</p>
+                </td>
+
+                <td colspan="2">
+                  <table class="secondTable">
+                    <tr ng-repeat="perObj in perspectivesObjReprt" style="background:{{perObj.bgColor}};color:{{perObj.fontColor}}">
+                      <td>
+                        <p>{{perObj.name}}
+                          <img ng-src="{{checkSrc(perObj.imgIcon)}}" ng-hide="perObj.imgIcon == ''" alt="img here!">
+                        </p>
+                        <p>Score : {{perObj.score}}</p>
+                        <p>Weight : {{perObj.weight}}</p>
+                        <p>Target : {{perObj.target}}</p>
+                        <p>Min : {{perObj.min}}</p>
+                        <p>{{perObj.description}}</p>
+                      </td>
+                      <td>
+                        <table class="thirdTable">
+                          <tr ng-repeat="perObjKPI in perspectivesObjKPIReprt" style="background:{{perObjKPI.bgColor}};color:{{perObjKPI.fontColor}}">
+                            <td>
+                              <p>{{perObjKPI.name}}
+                                <img ng-src="{{checkSrc(perObjKPI.imgIcon)}}" ng-hide="perObjKPI.imgIcon == ''" alt="img here!">
+                              </p>
+                              <p>Score : {{perObjKPI.score}}</p>
+                              <p>Weight : {{perObjKPI.weight}}</p>
+                              <p>Target : {{perObjKPI.target}}</p>
+                              <p>Min : {{perObjKPI.min}}</p>
+                              <p>Management : {{perObjKPI.managementName}}</p>
+                              <p>Calculation : {{perObjKPI.calculationName}}</p>
+                              <p>Unit : {{perObjKPI.unit}}</p>
+                              <p>Formula : {{perObjKPI.formula.name}}</p>
+                              <p>Organization :
+                                <span ng-repeat="org in perObjKPI.organizations">{{org.name}} ,</span>
+                              </p>
+                              <p>Employee :
+                                <span ng-repeat="emp in perObjKPI.employees">{{emp.name}} ,</span>
+                              </p>
+                              <p>{{perObjKPI.description}}</p>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default panel-custom">
+      <div class="panel-heading">
+        <h5>Perspectives date range score</h5>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-custom">
+            <tbody>
+              <tr ng-repeat="perDRS in perspectivesReprt">
+                <td style="background:{{perDRS.bgColor}};color:{{perDRS.fontColor}}">{{perDRS.name}}
+                  <img ng-src="{{checkSrc(perDRS.imgIcon)}}" ng-hide="perDRS.imgIcon == ''" alt="img here!">
+                </td>
+                <td ng-repeat="perDRScore in perDRS.dateRangeScores" style="background:{{perDRScore.bgColor}};color:{{perDRScore.fontColor}}">
+                  <p>{{perDRScore.date}}</p>
+                  <p>{{(perDRScore.score | number:2)*1}}
+                    <img ng-src="{{checkSrc(perDRScore.imgIcon)}}" ng-hide="perDRScore.imgIcon == ''" alt="img here!">
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default panel-custom">
+      <div class="panel-heading">
+        <h5>Objectives date range score</h5>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-custom">
+            <tbody>
+              <tr ng-repeat="objDRS in perspectivesObjReprt">
+                <td style="background:{{objDRS.bgColor}};color:{{objDRS.fontColor}}">{{objDRS.name}}
+                  <img ng-src="{{checkSrc(objDRS.imgIcon)}}" ng-hide="objDRS.imgIcon == ''" alt="img here!">
+                </td>
+                <td ng-repeat="objDRScore in objDRS.dateRangeScores" style="background:{{objDRScore.bgColor}};color:{{objDRScore.fontColor}}">
+                  <p>{{objDRScore.date}}</p>
+                  <p>{{(objDRScore.score | number:2)*1}}
+                    <img ng-src="{{checkSrc(objDRScore.imgIcon)}}" ng-hide="objDRScore.imgIcon == ''" alt="img here!">
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default panel-custom">
+      <div class="panel-heading">
+        <h5>KPI date range score</h5>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-custom">
+            <tbody>
+              <tr ng-repeat="kpiDRS in perspectivesObjKPIReprt">
+                <td style="background:{{kpiDRS.bgColor}};color:{{kpiDRS.fontColor}}">{{kpiDRS.name}}
+                  <img ng-src="{{checkSrc(kpiDRS.imgIcon)}}" ng-hide="kpiDRS.imgIcon == ''" alt="img here!">
+                </td>
+                <td ng-repeat="kpiDRScore in kpiDRS.dateRangeScores" style="background:{{kpiDRScore.bgColor}};color:{{kpiDRScore.fontColor}}">
+                  <p>{{kpiDRScore.date}}</p>
+                  <p>{{(kpiDRScore.score | number:2)*1}}
+                    <img ng-src="{{checkSrc(kpiDRScore.imgIcon)}}" ng-hide="kpiDRScore.imgIcon == ''" alt="img here!">
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        </main>
+    </article>

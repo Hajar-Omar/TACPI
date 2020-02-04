@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+  font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  font: 300 13px/1.6 'Helvetica Neue', Helvetica, Arial;
+  color: #444;
+  transition: all .4s .3s ease-in;
+}
+img {
+  max-width: 100%;
+}
+
+
+
+//checkbox
+.checkbox {
+    .cr {
+      position: relative;
+      border: 2px solid #d6d6d6;
+      border-radius: 0.45em;
+      width: 1.7em;
+      height: 1.7em;
+      float: left;
+      margin-right: 1.2em;
+        .cr-icon {
+          position: absolute;
+          font-size: .8em;
+          line-height: 0;
+          top: 50%;
+          left: 20%;
+        }
+      }
+      label{
+        &:after{
+        content: '';
+        display: table;
+        clear: both;
+      }
+      input[type="checkbox"] {
+        display: none;
+        & + .cr > .cr-icon {
+          transform: scale(3) rotateZ(-20deg);
+          opacity: 0;
+          transition: all .3s ease-in;
+        }
+        &:checked + .cr > .cr-icon {
+          transform: scale(1) rotateZ(0deg);
+          opacity: 1;
+        }
+      }
+    }
+}
+
+//tabs charts
+ul.nav.nav-tabs {
+  background-color: #ebebeb;
+  padding: 5px 0 0 10px;
+      a{
+        color :#747786;font-weight:  bold;
+      }
+}
+
+
+
+
+
+//nested tables
+.nestedTable td {
+  vertical-align: middle !important; }
+
+.nestedTable table {
+  width: 100%; }
+
+.nestedTable td {
+  border: 1px solid #dddddd;
+  }
+
+.nestedTable tr > td:last-child {
+  padding: 0 !important;
+  width: 75%;
+  }
+.nestedTable tr > td:last-child .thirdTable tr td,.nestedTable tr > td:last-child .secondTable tr td:first-child {
+  padding: 15px !important
+ }
+ .nestedTable tr > td:last-child .secondTable tr> td {width:50%}
+.nestedTable td:last-child .secondTable tr:first-child td {
+  border-top: none; }
+
+.nestedTable td:last-child .secondTable tr:last-child td {
+  border-bottom: none; }
+  .nestedTable thead  th:last-child{padding: 0px !important;vertical-align:  middle;}
+  .nestedTable thead th:last-child tr th{width:50%;padding: 0 15px !important;}
